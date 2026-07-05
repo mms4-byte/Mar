@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Toto App - Premium Edition</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #000000;
+            --ios-card-bg: rgba(28, 28, 30, 0.7);
+            --text-primary: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --gold-accent: #D4AF37;
+            --gold-light: #F4E4A6;
+            --gold-icon-bg: rgba(212, 175, 55, 0.15);
+            --danger: #FF453A;
+            --danger-bg: rgba(255, 69, 58, 0.15);
+            --warning: #FF9F0A;
+            --warning-bg: rgba(255, 159, 10, 0.15);
+            --success: #30D158;
+            --success-bg: rgba(48, 209, 88, 0.15);
+            --separator: rgba(84, 84, 88, 0.65);
+            --blur-effect: blur(25px) saturate(200%);
+            
+            /* ألوان السوشيال ميديا */
+            --telegram-color: #0088cc;
+            --telegram-bg: rgba(0, 136, 204, 0.15);
+            --instagram-color: #E4405F;
+            --instagram-bg: rgba(228, 64, 95, 0.15);
+            --facebook-color: #1877F2;
+            --facebook-bg: rgba(24, 119, 242, 0.15);
+            --whatsapp-color: #25D366;
+            --whatsapp-bg: rgba(37, 211, 102, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overscroll-behavior-y: none;
+        }
+
+        /* ================= شاشة الترحيب ================= */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .splash-logo {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold-accent) 0%, var(--gold-light) 50%, var(--gold-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            animation: logoGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(212, 175, 55, 0.6)); }
+        }
+
+        .splash-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .splash-loader {
+            margin-top: 40px;
+            width: 50px;
+            height: 3px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+
+        .splash-loader::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: var(--gold-accent);
+            border-radius: 2px;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= الشريط العلوي ================= */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: var(--blur-effect);
+            -webkit-backdrop-filter: var(--blur-effect);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s ease 0.5s;
+        }
+
+        .nav-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--gold-accent), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ================= المحتوى الرئيسي ================= */
+        #main-content {
+            width: 100%;
+            max-width: 100%;
+            padding: 20px 4vw 60px 4vw;
+            opacity: 0;
+            transform: scale(0.98);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* هيدر البروفايل */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .profile-pic-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold-accent);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            border: 3px solid var(--bg-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(48, 209, 88, 0); }
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bio-divider {
+            width: 4px;
+            height: 4px;
+            background: var(--gold-accent);
+            border-radius: 50%;
+        }
+
+        /* ================= البطاقات ================= */
+        .ios-group {
+            margin-bottom: 30px;
+        }
+
+        .ios-group-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-right: 15px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ios-group-title ion-icon {
+            color: var(--gold-accent);
+            font-size: 1.3rem;
+        }
+
+        .ios-card {
+            background: var(--ios-card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: var(--blur-effect);
+            -webkit-backdrop-filter: var(--blur-effect);
+            border: 0.5px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .ios-card:active {
+            transform: scale(0.98);
+        }
+
+        .ios-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            position: relative;
+        }
+
+        .ios-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 56px;
+            left: 0;
+            height: 0.5px;
+            background-color: var(--separator);
+        }
+
+        .item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-box {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--gold-icon-bg);
+        }
+
+        .icon-box ion-icon {
+            font-size: 1.2rem;
+            color: var(--gold-accent);
+        }
+
+        .item-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .item-value {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .icon-danger { background: var(--danger-bg); }
+        .icon-danger ion-icon { color: var(--danger); }
+        .icon-warning { background: var(--warning-bg); }
+        .icon-warning ion-icon { color: var(--warning); }
+        .icon-success { background: var(--success-bg); }
+        .icon-success ion-icon { color: var(--success); }
+
+        /* ================= النصوص ================= */
+        .ios-paragraph {
+            padding: 16px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            text-align: justify;
+        }
+
+        .highlight-text {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ================= التاجز ================= */
+        .tags-wrapper {
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .ios-tag {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ios-tag:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .ios-tag ion-icon {
+            color: var(--gold-accent);
+            font-size: 1rem;
+        }
+
+        /* ================= الرسم البياني المحسن ================= */
+        .body-graph-container {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+        }
+
+        .body-graph-container img {
+            height: 90%;
+            max-width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+        }
+
+        .glass-label {
+            position: absolute;
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 10px 18px;
+            border-radius: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .glass-label .title { 
+            font-size: 0.85rem; 
+            color: var(--text-secondary); 
+            margin-bottom: 2px;
+        }
+        .glass-label .val { 
+            font-size: 1.2rem; 
+            font-weight: 800; 
+            color: var(--gold-accent);
+        }
+
+        .pos-age { top: 12%; right: 15%; animation-delay: 0s; }
+        .pos-height { top: 42%; left: 10%; animation-delay: 0.5s; }
+        .pos-weight { bottom: 22%; right: 15%; animation-delay: 1s; }
+
+        /* خطوط الربط */
+        .connector-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+            height: 1px;
+            opacity: 0.5;
+        }
+
+        .line-age {
+            top: 18%;
+            right: 25%;
+            width: 15%;
+            transform: rotate(-30deg);
+        }
+
+        .line-height {
+            top: 48%;
+            left: 22%;
+            width: 15%;
+        }
+
+        .line-weight {
+            bottom: 28%;
+            right: 25%;
+            width: 15%;
+            transform: rotate(30deg);
+        }
+
+        /* ================= قسم البرج المميز ================= */
+        .zodiac-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(28, 28, 30, 0.7) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .zodiac-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .zodiac-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--gold-accent), var(--gold-light));
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .zodiac-icon ion-icon {
+            font-size: 2rem;
+            color: #000;
+        }
+
+        .zodiac-info h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gold-accent);
+            margin-bottom: 5px;
+        }
+
+        .zodiac-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ================= قسم السوشيال ميديا ================= */
+        .social-card {
+            background: linear-gradient(135deg, rgba(28, 28, 30, 0.8) 0%, rgba(28, 28, 30, 0.6) 100%);
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .social-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .social-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 60px;
+            left: 0;
+            height: 0.5px;
+            background-color: var(--separator);
+        }
+
+        .social-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .social-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .social-item:hover .social-icon-box {
+            transform: scale(1.1);
+        }
+
+        .social-icon-box ion-icon {
+            font-size: 1.4rem;
+        }
+
+        .social-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .social-platform {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .social-username {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+        }
+
+        .social-arrow {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-item:hover .social-arrow {
+            transform: translateX(-5px);
+        }
+
+        /* ألوان السوشيال ميديا */
+        .telegram-icon {
+            background: var(--telegram-bg);
+        }
+        .telegram-icon ion-icon {
+            color: var(--telegram-color);
+        }
+
+        .instagram-icon {
+            background: var(--instagram-bg);
+        }
+        .instagram-icon ion-icon {
+            color: var(--instagram-color);
+        }
+
+        .facebook-icon {
+            background: var(--facebook-bg);
+        }
+        .facebook-icon ion-icon {
+            color: var(--facebook-color);
+        }
+
+        .whatsapp-icon {
+            background: var(--whatsapp-bg);
+        }
+        .whatsapp-icon ion-icon {
+            color: var(--whatsapp-color);
+        }
+
+        /* ================= فوتر ================= */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-icon {
+            color: var(--gold-accent);
+            margin: 0 5px;
+        }
+
+        /* ================= استجابة الشاشات ================= */
+        @media (max-width: 768px) {
+            .profile-name { font-size: 2rem; }
+            .body-graph-container { height: 50vh; min-height: 400px; }
+            .glass-label { padding: 8px 14px; }
+            .glass-label .val { font-size: 1rem; }
+        }
+
+        /* ================= Scroll Animation ================= */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة الترحيب -->
+    <div id="splash-screen">
+        <div class="splash-logo">TOTO</div>
+        <div class="splash-subtitle">Premium iOS Experience</div>
+        <div class="splash-loader"></div>
+    </div>
+
+    <!-- شريط التنقل -->
+    <div class="nav-bar" id="navBar">
+        <div class="nav-title">Toto Profile</div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div id="main-content">
+        
+        <!-- الهيدر الشخصي -->
+        <div class="profile-header">
+            <div class="profile-pic-wrapper">
+                <img src="https://imgg.io/images/2026/07/05/4d679a9cdff620ae2c44795bba134f8f.jpg" alt="مروان حسن" class="profile-pic">
+                <div class="online-badge"></div>
+            </div>
+            <h1 class="profile-name">مروان حسن</h1>
+            <p class="profile-bio">
+                <span>مطور</span>
+                <span class="bio-divider"></span>
+                <span>صانع أدوات</span>
+                <span class="bio-divider"></span>
+                <span>السادس علمي</span>
+            </p>
+        </div>
+
+        <!-- المعلومات الأساسية -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="person-circle"></ion-icon>
+                المعلومات الشخصية
+            </h2>
+            <div class="ios-card">
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box"><ion-icon name="calendar"></ion-icon></div>
+                        <span class="item-label">تاريخ الميلاد</span>
+                    </div>
+                    <span class="item-value">2006/7/21</span>
+                </div>
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box icon-success"><ion-icon name="hourglass"></ion-icon></div>
+                        <span class="item-label">العمر</span>
+                    </div>
+                    <span class="item-value">20 عاماً</span>
+                </div>
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box"><ion-icon name="location"></ion-icon></div>
+                        <span class="item-label">المحافظة</span>
+                    </div>
+                    <span class="item-value">الأنبار</span>
+                </div>
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box"><ion-icon name="people"></ion-icon></div>
+                        <span class="item-label">العائلة</span>
+                    </div>
+                    <span class="item-value">5 أفراد</span>
+                </div>
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box"><ion-icon name="male"></ion-icon></div>
+                        <span class="item-label">الأخوة</span>
+                    </div>
+                    <span class="item-value">أخ واحد، أخت واحدة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم البرج المميز -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="sparkles"></ion-icon>
+                البرج الفلكي
+            </h2>
+            <div class="ios-card zodiac-card">
+                <div class="zodiac-header">
+                    <div class="zodiac-icon">
+                        <ion-icon name="moon"></ion-icon>
+                    </div>
+                    <div class="zodiac-info">
+                        <h3>♋ برج السرطان</h3>
+                        <p>21 يونيو - 22 يوليو</p>
+                    </div>
+                </div>
+                <div class="ios-paragraph">
+                    <span class="highlight-text">♋ مميزات برج السرطان التي تتطابق مع شخصيتك:</span><br><br>
+                    <ion-icon name="heart" class="footer-icon"></ion-icon> العمق والوعي الفطري<br>
+                    <ion-icon name="leaf" class="footer-icon"></ion-icon> الهدوء وتفضيل العزلة أحياناً<br>
+                    <ion-icon name="shield-checkmark" class="footer-icon"></ion-icon> الإخلاص والصدق الشديد<br>
+                    <ion-icon name="flash" class="footer-icon"></ion-icon> عصبي جداً عند تجاوز الخطوط الحمراء<br>
+                    <ion-icon name="home" class="footer-icon"></ion-icon> محب، وفي، ويسعى دائماً لحماية المقربين<br><br>
+                    السرطان برج مائي يتميز بالعاطفة العميقة والحدس القوي، يحب الاستقرار والأمان، ويقدس العلاقات الصادقة.
+                </div>
+            </div>
+        </div>
+
+        <!-- الرسم البياني المحسن -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="stats-chart"></ion-icon>
+                المؤشرات الجسدية
+            </h2>
+            <div class="ios-card">
+                <div class="body-graph-container">
+                    <img src="https://imgg.io/images/2026/07/05/d852968d17edfb0a7a0aa0ff1c7560e8.png" alt="مؤشرات الجسم">
+                    
+                    <!-- خطوط الربط المتحركة -->
+                    <div class="connector-line line-age"></div>
+                    <div class="connector-line line-height"></div>
+                    <div class="connector-line line-weight"></div>
+                    
+                    <!-- الملصقات -->
+                    <div class="glass-label pos-age">
+                        <span class="title">العمر</span>
+                        <span class="val">20 سنة</span>
+                    </div>
+                    <div class="glass-label pos-height">
+                        <span class="title">الطول</span>
+                        <span class="val">178 cm</span>
+                    </div>
+                    <div class="glass-label pos-weight">
+                        <span class="title">الوزن</span>
+                        <span class="val">65 Kg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المهارات -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="code-slash"></ion-icon>
+                المهن والمهارات
+            </h2>
+            <div class="ios-card">
+                <div class="tags-wrapper">
+                    <div class="ios-tag"><ion-icon name="apps"></ion-icon> بناء تطبيقات</div>
+                    <div class="ios-tag"><ion-icon name="globe"></ion-icon> بناء مواقع إلكترونية</div>
+                    <div class="ios-tag"><ion-icon name="hardware-chip"></ion-icon> بناء بوتات وأدوات</div>
+                    <div class="ios-tag"><ion-icon name="logo-html5"></ion-icon> HTML</div>
+                    <div class="ios-tag"><ion-icon name="logo-python"></ion-icon> Python</div>
+                    <div class="ios-tag"><ion-icon name="terminal"></ion-icon> C++</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الهوايات -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="compass"></ion-icon>
+                الهوايات والشغف
+            </h2>
+            <div class="ios-card">
+                <div class="tags-wrapper">
+                    <div class="ios-tag"><ion-icon name="airplane"></ion-icon> السفر</div>
+                    <div class="ios-tag"><ion-icon name="leaf"></ion-icon> الطبيعة والغابات</div>
+                    <div class="ios-tag"><ion-icon name="code-slash"></ion-icon> البرمجة</div>
+                    <div class="ios-tag"><ion-icon name="trending-up"></ion-icon> السعي للأفضل</div>
+                    <div class="ios-tag"><ion-icon name="book"></ion-icon> هندسة البرمجيات</div>
+                    <div class="ios-tag"><ion-icon name="musical-notes"></ion-icon> الشعر الشعبي</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- أشياء أحبها -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="heart"></ion-icon>
+                أشياء أحبها
+            </h2>
+            <div class="ios-card">
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box icon-success"><ion-icon name="thumbs-up"></ion-icon></div>
+                        <span class="item-label">التفضيلات الإيجابية</span>
+                    </div>
+                </div>
+                <div class="ios-paragraph">
+                    <ion-icon name="heart" class="footer-icon"></ion-icon> <span class="highlight-text">الوحدة، الهدوء، الطبيعة والغابات، والسفر.</span><br><br>
+                    <ion-icon name="person" class="footer-icon"></ion-icon> أحب الشخص على طبيعته كما ولدته أمه، الصادق والصريح، الواعي ذو التفكير العميق.<br><br>
+                    <ion-icon name="shield-checkmark" class="footer-icon"></ion-icon> أقدس الشخص الوفي والصادق معي حتى لو كان قاسياً.<br><br>
+                    <ion-icon name="trophy" class="footer-icon"></ion-icon> أحب الأشياء الصعبة التي أحققها بجهدي.<br><br>
+                    <ion-icon name="tv" class="footer-icon"></ion-icon> أتابع مجلات هندسة البرمجيات، ويوتيوبرية السياحة (عبد الله كلاسيك، لورنس).<br><br>
+                    <ion-icon name="musical-notes" class="footer-icon"></ion-icon> أحب الشعر الشعبي العراقي وأغاني حيدر العابدي.
+                </div>
+            </div>
+        </div>
+
+        <!-- أشياء لا أحبها -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="close-circle"></ion-icon>
+                أشياء لا أحبها
+            </h2>
+            <div class="ios-card">
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box icon-warning"><ion-icon name="alert-circle"></ion-icon></div>
+                        <span class="item-label" style="color: var(--warning);">مرفوضات</span>
+                    </div>
+                </div>
+                <div class="ios-paragraph">
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> <span class="highlight-text">ما أحب أحد يأمرني</span><br>
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> الشخص الكذاب، المجامل، المتصنع، المغرور، المتكبر<br>
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> الأقارب (كرايبي)، الطلعات الكثيرة<br>
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> سوالف البنات، سوالف الولد غير اللائقة<br>
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> القعدات الجماعية، الأصدقاء الكثر، التجمعات<br>
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> ما أحب آخذ شيء من أحد، لا أحب الهدايا<br>
+                    <ion-icon name="close" class="footer-icon" style="color: var(--warning);"></ion-icon> لا أحب الأشياء السهلة
+                </div>
+            </div>
+        </div>
+
+        <!-- طبيعتي -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="finger-print"></ion-icon>
+                طبيعتي
+            </h2>
+            <div class="ios-card">
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box"><ion-icon name="person"></ion-icon></div>
+                        <span class="item-label">الشخصية</span>
+                    </div>
+                </div>
+                <div class="ios-paragraph">
+                    <ion-icon name="leaf" class="footer-icon"></ion-icon> <span class="highlight-text">هادئ جداً</span><br><br>
+                    <ion-icon name="eye-off" class="footer-icon"></ion-icon> "الشي اللي ميخصني مالي شغل بيه"<br><br>
+                    <ion-icon name="checkmark-circle" class="footer-icon"></ion-icon> الأشياء الخطأ لا أقبل بها<br><br>
+                    <ion-icon name="close-circle" class="footer-icon" style="color: var(--warning);"></ion-icon> لا أحب من يتباهى و(يفص)<br><br>
+                    <ion-icon name="flash" class="footer-icon" style="color: var(--danger);"></ion-icon> أتحول إلى شخص عصبي إلى أقصى درجة عند الخطوط الحمراء
+                </div>
+            </div>
+        </div>
+
+        <!-- خطوط حمراء -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title" style="color: var(--danger);">
+                <ion-icon name="warning"></ion-icon>
+                خط أحمر
+            </h2>
+            <div class="ios-card" style="border: 1px solid rgba(255, 69, 58, 0.4); background: linear-gradient(135deg, rgba(255, 69, 58, 0.05) 0%, rgba(28, 28, 30, 0.7) 100%);">
+                <div class="ios-item">
+                    <div class="item-left">
+                        <div class="icon-box icon-danger"><ion-icon name="shield-x"></ion-icon></div>
+                        <span class="item-label" style="color: var(--danger); font-weight: 700;">يمنع المساس بها</span>
+                    </div>
+                </div>
+                <div class="ios-paragraph" style="color: #ff8a84; font-weight: 500;">
+                    <ion-icon name="alert" style="color: var(--danger); margin-left: 5px;"></ion-icon> <span class="highlight-text">أي شيء يخصني أو يخص أهلي</span><br><br>
+                    <ion-icon name="alert" style="color: var(--danger); margin-left: 5px;"></ion-icon> سوالف الشرف والعرض<br><br>
+                    <ion-icon name="alert" style="color: var(--danger); margin-left: 5px;"></ion-icon> التلفظ السيء (الفشار)<br><br>
+                    <ion-icon name="alert" style="color: var(--danger); margin-left: 5px;"></ion-icon> الوقاحة<br><br>
+                    <ion-icon name="alert" style="color: var(--danger); margin-left: 5px;"></ion-icon> المنافقين<br><br>
+                    <ion-icon name="alert" style="color: var(--danger); margin-left: 5px;"></ion-icon> أي شخص يحجي على بشر كدامي
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم السوشيال ميديا -->
+        <div class="ios-group fade-in-section">
+            <h2 class="ios-group-title">
+                <ion-icon name="share-social"></ion-icon>
+                تواصل معي
+            </h2>
+            <div class="ios-card social-card">
+                <a href="https://t.me/rz_6b" target="_blank" class="social-item">
+                    <div class="social-left">
+                        <div class="social-icon-box telegram-icon">
+                            <ion-icon name="send"></ion-icon>
+                        </div>
+                        <div class="social-info">
+                            <span class="social-platform">تيليجرام</span>
+                            <span class="social-username">@rz_6b</span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-back" class="social-arrow"></ion-icon>
+                </a>
+
+                <a href="https://instagram.com/rz_6b" target="_blank" class="social-item">
+                    <div class="social-left">
+                        <div class="social-icon-box instagram-icon">
+                            <ion-icon name="logo-instagram"></ion-icon>
+                        </div>
+                        <div class="social-info">
+                            <span class="social-platform">انستقرام</span>
+                            <span class="social-username">@rz_6b</span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-back" class="social-arrow"></ion-icon>
+                </a>
+
+                <a href="https://facebook.com/rz.6bb" target="_blank" class="social-item">
+                    <div class="social-left">
+                        <div class="social-icon-box facebook-icon">
+                            <ion-icon name="logo-facebook"></ion-icon>
+                        </div>
+                        <div class="social-info">
+                            <span class="social-platform">فيسبوك</span>
+                            <span class="social-username">@rz.6bb</span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-back" class="social-arrow"></ion-icon>
+                </a>
+
+                <a href="https://wa.me/rz6b" target="_blank" class="social-item">
+                    <div class="social-left">
+                        <div class="social-icon-box whatsapp-icon">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                        </div>
+                        <div class="social-info">
+                            <span class="social-platform">واتساب</span>
+                            <span class="social-username">rz6b@</span>
+                        </div>
+                    </div>
+                    <ion-icon name="chevron-back" class="social-arrow"></ion-icon>
+                </a>
+            </div>
+        </div>
+
+        <!-- فوتر -->
+        <div class="footer">
+            <p>
+                <ion-icon name="heart" class="footer-icon"></ion-icon>
+                Toto App
+                <ion-icon name="heart" class="footer-icon"></ion-icon>
+            </p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">Premium iOS Experience • 2026</p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const splashScreen = document.getElementById("splash-screen");
+            const mainContent = document.getElementById("main-content");
+            const navBar = document.getElementById("navBar");
+
+            // إخفاء شاشة الترحيب
+            setTimeout(() => {
+                splashScreen.style.opacity = "0";
+                splashScreen.style.transform = "scale(1.1)";
+                
+                setTimeout(() => {
+                    splashScreen.style.display = "none";
+                    mainContent.style.opacity = "1";
+                    mainContent.style.transform = "scale(1)";
+                    navBar.style.opacity = "1";
+                    navBar.style.transform = "translateY(0)";
+                    
+                    // تفعيل الأنيميشن عند التمرير
+                    initScrollAnimations();
+                }, 800);
+
+            }, 2800);
+        });
+
+        // أنيميشن عند التمرير
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+    </script>
+
+</body>
+</html>
